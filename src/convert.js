@@ -21,7 +21,7 @@ export default function convert(data, options) {
 
     return features;
 }
-
+// Исправлена ошибка с конвертацией мультиполигонов
 function convertFeature(features, geojson, options, index) {
     if (!geojson.geometry) return;
 
@@ -66,7 +66,7 @@ function convertFeature(features, geojson, options, index) {
         for (const polygon of coords) {
             const newPolygon = [];
             convertLines(polygon, newPolygon, tolerance, true);
-            geometry.push(newPolygon);
+            features.push(createFeature(id, 'Polygon', newPolygon, geojson.properties));
         }
     } else if (type === 'GeometryCollection') {
         for (const singleGeometry of geojson.geometry.geometries) {
@@ -80,8 +80,7 @@ function convertFeature(features, geojson, options, index) {
     } else {
         throw new Error('Input data is not a valid GeoJSON object.');
     }
-
-    features.push(createFeature(id, type, geometry, geojson.properties));
+    if (geometry.length > 0) features.push(createFeature(id, type, geometry, geojson.properties));
 }
 
 function convertPoint(coords, out) {
@@ -127,12 +126,22 @@ function convertLines(rings, out, tolerance, isPolygon) {
     }
 }
 
-function projectX(x) {
-    return x / 360 + 0.5;
+// Тут изменения для 2Гис - цель формирование тайлов в том же количестве и позиционировании что и тайловый сервер данных
+// TODO вынести это как опцию - внешняя функция кастомной проекции
+
+const worldSize = 1;
+
+function degToRad(degrees) {
+    return (degrees * Math.PI) / 180;
 }
 
-function projectY(y) {
-    const sin = Math.sin(y * Math.PI / 180);
-    const y2 = 0.5 - 0.25 * Math.log((1 + sin) / (1 - sin)) / Math.PI;
-    return y2 < 0 ? 0 : y2 > 1 ? 1 : y2;
+function projectX(xx) {
+    const x = (xx * worldSize) / 360 + 0.5;
+    return x
+}
+
+function projectY(yy) {
+    const sin = Math.sin(degToRad(yy));
+    const y = (Math.log((1 + sin) / (1 - sin)) * worldSize) / (4 * Math.PI);
+    return y + 0.5
 }
