@@ -135,13 +135,14 @@ function degToRad(degrees) {
     return (degrees * Math.PI) / 180;
 }
 
-function projectX(xx) {
-    const x = (xx * worldSize) / 360 + 0.5;
-    return x
+function projectX(xOfPoint) {
+    const xProjectGeo = (xOfPoint * worldSize) / 360 + 0.5;
+    return xProjectGeo
 }
 
-function projectY(yy) {
-    const sin = Math.sin(degToRad(yy));
-    const y = (Math.log((1 + sin) / (1 - sin)) * worldSize) / (4 * Math.PI);
-    return y + 0.5
+function projectY(yOfCoord) {
+    const sin = Math.sin(degToRad(yOfCoord));
+    const yProjectGeo = ((Math.log((1 + sin) / (1 - sin)) * worldSize) / (4 * Math.PI)) + 0.5;
+    return yProjectGeo
 }
+
