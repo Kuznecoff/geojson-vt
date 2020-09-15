@@ -20,7 +20,7 @@ tolerance?: number,           // simplification tolerance (higher means simpler)
 extent?: number,           // tile extent
 buffer?: number,             // tile buffer on each side
 lineMetrics?: boolean,     // whether to calculate line metrics
-promoteId?: number,        // name of a feature property to be promoted to feature.id
+promoteId?: number | null,        // name of a feature property to be promoted to feature.id
 generateId?: boolean,      // whether to generate feature ids. Cannot be used with promoteId
 debug?: number     
 }
@@ -46,6 +46,3 @@ export default function geojsonvt(data:GeoJSON, options:GeoJsonVtOptions) : {
     getTile(z: number,x: number, y: number): TileGeoJsonVt[];
   }
 
-  declare module "geojson-vt" {
-    export = geojsonvt;
-  }
