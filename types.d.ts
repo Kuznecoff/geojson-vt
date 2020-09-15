@@ -45,3 +45,7 @@ export interface TileGeoJsonVt {
 export default function geojsonvt(data:GeoJSON, options:GeoJsonVtOptions) : {
     getTile(z: number,x: number, y: number): TileGeoJsonVt[];
   }
+
+  declare module "geojson-vt" {
+    export = geojsonvt;
+  }
