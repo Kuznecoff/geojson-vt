@@ -6,22 +6,37 @@ interface Tag {
     value: string
 }
 
-export interface TileFeature {
-    geometry: GeoJSON.Position[][] | GeoJSON.Position[],
-    type: number,
+
+interface TileFeaturePolygons {
+    geometry: GeoJSON.Position[][],
+    type: 3,
     tags: Tag[]
 }
 
+interface TileFeatureLines {
+    geometry: GeoJSON.Position[][],
+    type: 2,
+    tags: Tag[]
+}
+
+interface TileFeaturePoints {
+    geometry: GeoJSON.Position[],
+    type: 1,
+    tags: Tag[]
+}
+
+export type TileFeature = TileFeaturePoints | TileFeatureLines | TileFeaturePolygons;
+
 export interface GeoJsonVtOptions {
-    maxZoom?: number,            // max zoom to preserve detail on
-    indexMaxZoom?: number,        // max zoom in the tile index
-    indexMaxPoints?: number, // max number of points per tile in the tile index
-    tolerance?: number,           // simplification tolerance (higher means simpler)
-    extent?: number,           // tile extent
-    buffer?: number,             // tile buffer on each side
-    lineMetrics?: boolean,     // whether to calculate line metrics
-    promoteId?: number | null,        // name of a feature property to be promoted to feature.id
-    generateId?: boolean,      // whether to generate feature ids. Cannot be used with promoteId
+    maxZoom?: number,
+    indexMaxZoom?: number,
+    indexMaxPoints?: number,
+    tolerance?: number,
+    extent?: number,
+    buffer?: number,
+    lineMetrics?: boolean,
+    promoteId?: number | null,
+    generateId?: boolean,
     debug?: number
 }
 
@@ -42,7 +57,7 @@ export interface TileGeoJsonVt {
 }
 
 export interface GeoJsonVT {
-    getTile(z: number, x: number, y: number): TileGeoJsonVt[];
+    getTile(z: number, x: number, y: number): TileGeoJsonVt | null;
 }
 
 export default function geojsonvt(data: GeoJSON, options: GeoJsonVtOptions): GeoJsonVT
