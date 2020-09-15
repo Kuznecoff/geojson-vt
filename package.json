@@ -17,7 +17,9 @@
   "main": "geojson-vt.js",
   "jsdelivr": "geojson-vt.js",
   "unpkg": "geojson-vt.js",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
+    "@types/geojson": "^7946.0.7"
   },
   "eslintConfig": {
     "extends": "mourner",
@@ -26,8 +28,8 @@
     }
   },
   "license": "ISC",
-  "scripts": {
-  },
+  "scripts": {},
+  "types": "./types.d.ts",
   "files": [
     "geojson-vt.js"
   ]
