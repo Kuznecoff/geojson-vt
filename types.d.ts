@@ -45,7 +45,7 @@ export interface TileGeoJsonVt {
     numPoints: number,
     numSimplified: number,
     numFeatures: number,
-    source: any,
+    source: GeoJSON,
     x: number,
     y: number,
     z: number,
